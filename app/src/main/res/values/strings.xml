@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">FoodiesApp</string>
+
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <!-- FOR GOOGLE API -->
+    <string name="server_client_id">55827698592-8qj8mci54h1k0jboe3nlc1b6bsl2rl9d.apps.googleusercontent.com</string>
+</resources>
