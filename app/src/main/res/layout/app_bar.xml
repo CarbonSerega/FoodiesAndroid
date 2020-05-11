@@ -1,85 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.appbar.AppBarLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_bar_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:orientation="horizontal"
-    android:paddingStart="10dp"
-    android:paddingTop="0dp"
-    android:paddingEnd="0dp"
-    android:paddingBottom="0dp">
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme">
 
-    <TextView
-        android:layout_width="wrap_content"
+<androidx.appcompat.widget.Toolbar
+
+    android:id="@+id/tuned_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    app:contentInsetEnd="0dp"
+    app:contentInsetStart="0dp"
+    android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toStartOf="@+id/search_view"
-        android:layout_toEndOf="@+id/left_menu_icon"
-        android:fontFamily="@font/segoe_script"
-        android:padding="0dp"
-        android:text="@string/app_name"
-        android:textAlignment="center"
-        android:textColor="@color/colorSecondary"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/left_menu_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="10dp"
-        android:contentDescription="@string/title_left_menu"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
         android:paddingTop="0dp"
-        android:src="@drawable/ic_left_menu_icon"
-        android:tint="@color/colorSecondary" />
+        android:paddingEnd="0dp"
+        android:paddingBottom="0dp">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="3dp"
-        android:layout_toStartOf="@+id/view2"
-        android:background="@color/colorPrimary"
-        android:maxWidth="10000dp"
-        app:queryHint="@string/query_hint"
-        app:searchIcon="@drawable/ic_search_icon_small" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="0dp"
+            android:layout_toStartOf="@+id/search_view"
+            android:layout_toEndOf="@+id/left_menu_icon"
+            android:fontFamily="@font/segoe_script"
+            android:padding="0dp"
+            android:text="@string/app_name"
+            android:textAlignment="center"
+            android:textColor="@color/colorSecondary"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-    <View
-        android:id="@+id/view2"
-        style="@style/Divider.Vertical"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_toStartOf="@+id/filter_card_button" />
-
-        <androidx.cardview.widget.CardView
+        <ImageView
+            android:id="@+id/left_menu_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/filter_card_button"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/title_left_menu"
+            android:paddingTop="0dp"
+            android:src="@drawable/ic_left_menu_icon"
+            android:tint="@color/colorSecondary"
+            android:onClick="onLeftMenuIconClick"/>
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="3dp"
+            android:layout_toStartOf="@+id/view2"
+            android:background="@color/colorPrimary"
+            android:maxWidth="10000dp"
+            app:searchHintIcon="@null"
+            app:queryHint="@string/query_hint"
+            app:searchIcon="@drawable/ic_search_icon_small" />
+
+        <View
+            android:id="@+id/view2"
+            style="@style/Divider.Vertical"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_centerVertical="true"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="0dp">
+            android:layout_toStartOf="@+id/filter_card_button" />
 
-            <ImageView
-                android:id="@+id/filter_menu_icon"
-                android:background="@color/colorPrimary"
-                android:layout_width="match_parent"
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/title_left_menu"
-                android:paddingTop="0dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:src="@drawable/ic_filter_icon"
-                android:tint="@color/colorSecondary" />
+                android:id="@+id/filter_card_button"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_centerVertical="true"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="0dp"
+                android:onClick="onFilterCardClick">
 
-</androidx.cardview.widget.CardView>
-</RelativeLayout>
+                <ImageView
+                    android:id="@+id/filter_menu_icon"
+                    android:background="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/title_left_menu"
+                    android:paddingTop="0dp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:src="@drawable/ic_filter_icon"
+                    android:tint="@color/colorSecondary" />
+
+            </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>
+
+</com.google.android.material.appbar.AppBarLayout>

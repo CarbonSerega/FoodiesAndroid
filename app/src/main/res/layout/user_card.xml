@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp"
+    android:paddingTop="30dp"
+    android:paddingBottom="10dp"
+    android:background="@color/userCardColor">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/current_user_image_view"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/user_picture_hint"
+        android:src="@color/userCardDetailsColor">
+
+    </de.hdodenhof.circleimageview.CircleImageView>
+
+    <ProgressBar
+        android:id="@+id/left_panel_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_centerInParent="true"
+        android:theme="@style/AppTheme.PrimaryDarkAccent"
+        android:indeterminate="true" />
+
+    <Button
+        android:id="@+id/left_menu_sign_out_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/current_user_image_view"
+        android:layout_alignBottom="@+id/current_user_image_view"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/left_menu_user_layout_bg"
+        android:text="@string/title_user_sign_out"
+        android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/userGrayColor"
+        android:onClick="onSignOutClick"
+        app:backgroundTint="@color/userCardDetailsColor"/>
+
+    <RelativeLayout
+        android:id="@+id/current_user_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/current_user_image_view"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/current_user_name_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:textColor="@color/userGrayColor"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/current_user_email_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/current_user_name_text_view"
+            android:layout_marginTop="5dp"
+            android:singleLine="true"
+            android:textColor="@color/userGrayColor"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/left_menu_details_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/current_user_info"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/left_menu_user_layout_bg_reverse"
+        android:gravity="center"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp"
+        android:text="@string/title_user_details"
+        android:textColor="@color/colorSecondary"
+        app:backgroundTint="@color/colorPrimary" />
+
+<!--    <include-->
+<!--        layout="@layout/authorize_settings_view"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/current_user_info"-->
+<!--        android:layout_marginTop="20dp" />-->
+
+
+</RelativeLayout>

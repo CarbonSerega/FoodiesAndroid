@@ -1,4 +1,4 @@
-package com.example.foodiesapp.utils;
+package com.example.foodiesapp.utils.ui;
 
 import android.view.View;
 import android.widget.ImageView;
@@ -38,3 +38,4 @@ public final class AppBarTuner {
         return searchView;
     }
 }
+
