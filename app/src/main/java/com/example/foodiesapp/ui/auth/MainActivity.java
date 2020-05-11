@@ -35,7 +35,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     private GoogleSignInAccount account;
 
     private View userCardView;
+    private View userCardUnauthedView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +70,14 @@ public class MainActivity extends AppCompatActivity implements
         BottomNavigationView navView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
-
+        
         setSupportActionBar(findViewById(R.id.tuned_toolbar));
         ActionBar actionBar = AppBarTuner.tunedToolBar(getSupportActionBar(), R.layout.app_bar);
         SearchView searchView = AppBarTuner.tunedSearchView(actionBar, findViewById(R.id.search_view), findViewById(R.id.left_menu_icon));
         searchView.setOnQueryTextListener(this);
+
+        userCardUnauthedView = getLayoutInflater().inflate(R.layout.user_card_unauthed, findViewById(R.id.user_card_unauthed_view));
+        userCardView = getLayoutInflater().inflate(R.layout.user_card, findViewById(R.id.user_card_view));
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -182,8 +185,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private void updateUI() {
-        View userCardUnauthedView = getLayoutInflater().inflate(R.layout.user_card_unauthed, findViewById(R.id.user_card_unauthed_view));
-        userCardView = getLayoutInflater().inflate(R.layout.user_card, findViewById(R.id.user_card_view));
+        Log.d("UPDATE_UI", "msg");
         NavigationViewSettings.switchNavigationView(this.account == null,
                 userCardUnauthedView, userCardView, findViewById(R.id.left_sidebar));
     }
@@ -191,13 +193,13 @@ public class MainActivity extends AppCompatActivity implements
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> task) {
         try {
             account = task.getResult(ApiException.class);
-            updateUI();
             if(account != null) {
+                updateUI();
                 signInViewModel.callClientSignIn(account.getIdToken());
             }
         } catch (ApiException e) {
             account = null;
-            Log.w("HandleSignInResult", "handleSignInResult:error", e);
+            Log.w("HandleSignInResult", "Error -> ", e);
         }
     }
 
