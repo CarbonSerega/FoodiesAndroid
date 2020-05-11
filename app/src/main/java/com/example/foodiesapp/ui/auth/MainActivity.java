@@ -41,7 +41,7 @@ public class MainActivity extends FoodiesActivity implements
         super.onCreate(savedInstanceState);
 
         if(savedInstanceState == null)
-            getSupportFragmentManager().beginTransaction().add(R.id.user_card_view, new SignInFragment()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.left_sidebar_layout, new SignInFragment()).commit();
 
         //Set-up network connectivity
         networkConnectivity = new Connectivity();

@@ -57,8 +57,7 @@ public class SignInFragment extends FoodiesFragment {
 
         gsc = GoogleSignIn.getClient(requireContext(), gso);
 
-//        userCardUnauthedView = getLayoutInflater().inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
-//        userCardView = getLayoutInflater().inflate(R.layout.user_card, requireActivity().findViewById(R.id.user_card_view));
+        //userCardUnauthedView = getLayoutInflater().inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
     }
 
     @Override
@@ -67,7 +66,7 @@ public class SignInFragment extends FoodiesFragment {
         Log.d("ON_START", "stared");
         this.account = GoogleSignIn.getLastSignedInAccount(requireContext());
         updateUI();
-        gsc.silentSignIn().addOnCompleteListener((Executor) this, this::handleSignInResult);
+        gsc.silentSignIn().addOnCompleteListener(requireActivity(), this::handleSignInResult);
     }
 
     @Override
@@ -94,7 +93,7 @@ public class SignInFragment extends FoodiesFragment {
 
     private void updateUI() {
 //        NavigationViewSettings.switchNavigationView(this.account == null,
-//                userCardUnauthedView, userCardView, requireActivity().findViewById(R.id.left_sidebar));
+//                userCardUnauthedView, getView(), requireActivity().findViewById(R.id.left_sidebar));
     }
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> task) {
