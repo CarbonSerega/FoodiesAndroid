@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 import com.example.foodiesapp.models.User.UserResponse;
 import com.example.foodiesapp.repository.Repository;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -15,6 +17,7 @@ public class SignInViewModel extends ViewModel {
     private  CompositeDisposable disposables;
     private  MutableLiveData<UserResponse> userLiveData;
 
+    @Inject
     public SignInViewModel(Repository repository) {
         disposables = new CompositeDisposable();
         userLiveData = new MutableLiveData<>();
