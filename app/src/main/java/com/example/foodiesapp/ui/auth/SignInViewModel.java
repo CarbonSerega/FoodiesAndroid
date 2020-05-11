@@ -12,10 +12,12 @@ import io.reactivex.schedulers.Schedulers;
 
 public class SignInViewModel extends ViewModel {
     private Repository repository;
-    private final CompositeDisposable disposables = new CompositeDisposable();
-    private final MutableLiveData<UserResponse> userLiveData = new MutableLiveData<>();
+    private  CompositeDisposable disposables;
+    private  MutableLiveData<UserResponse> userLiveData;
 
     public SignInViewModel(Repository repository) {
+        disposables = new CompositeDisposable();
+        userLiveData = new MutableLiveData<>();
         this.repository = repository;
     }
 
@@ -36,6 +38,7 @@ public class SignInViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
+        super.onCleared();
         disposables.clear();
     }
 }

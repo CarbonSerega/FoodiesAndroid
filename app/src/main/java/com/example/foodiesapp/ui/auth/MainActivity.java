@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements
     private View userCardView;
     private View userCardUnauthedView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,17 +68,21 @@ public class MainActivity extends AppCompatActivity implements
         signInViewModel = new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
         signInViewModel.signInResponse().observe(this, this::consumeResponse);
 
+        //Bottom navigation set-up
         BottomNavigationView navView = findViewById(R.id.nav_view);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupWithNavController(navView, navController);
-        
+
+        //Action bar set-up
         setSupportActionBar(findViewById(R.id.tuned_toolbar));
         ActionBar actionBar = AppBarTuner.tunedToolBar(getSupportActionBar(), R.layout.app_bar);
         SearchView searchView = AppBarTuner.tunedSearchView(actionBar, findViewById(R.id.search_view), findViewById(R.id.left_menu_icon));
         searchView.setOnQueryTextListener(this);
 
+        //User headers
         userCardUnauthedView = getLayoutInflater().inflate(R.layout.user_card_unauthed, findViewById(R.id.user_card_unauthed_view));
         userCardView = getLayoutInflater().inflate(R.layout.user_card, findViewById(R.id.user_card_view));
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -172,20 +177,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void onSignOutClick(View view) {
-        gsc.signOut()
-                .addOnCompleteListener(this, task -> {
-                    CharSequence sequence = "Signed out!";
-                    Toast.makeText(getApplicationContext(), sequence, Toast.LENGTH_SHORT).show();
-                });
-
+        gsc.signOut();
         gsc.revokeAccess().addOnCompleteListener(this, task -> {
-            this.account = null;
+            account = null;
             updateUI();
         });
     }
 
     private void updateUI() {
-        Log.d("UPDATE_UI", "msg");
         NavigationViewSettings.switchNavigationView(this.account == null,
                 userCardUnauthedView, userCardView, findViewById(R.id.left_sidebar));
     }

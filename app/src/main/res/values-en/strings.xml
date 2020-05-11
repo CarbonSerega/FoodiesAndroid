@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_home">Main</string>
+    <string name="title_add_post">Add post</string>
+    <string name="title_favourites">Favourites</string>
+    <string name="title_search">Search</string>
+    <string name="query_hint">Search recipes…</string>
+    <string name="title_left_menu">Menu</string>
+    <string name="user_picture_hint">User</string>
+    <string name="title_user_details">Details</string>
+    <string name="title_user_sign_out">Sign out</string>
+    <string name="title_user_sign_in">Sign in</string>
+    <string name="title_user_anauthed">Let\'s show your recipes the world!</string>
+</resources>

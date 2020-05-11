@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Foodies</string>
+    <string name="app_name" translatable="false">Foodies</string>
 
     <!-- Bottom nav menu -->
     <string name="title_home">Головна</string>
@@ -18,8 +18,8 @@
     <string name="title_user_sign_in">Увійти</string>
     <string name="title_user_anauthed">Бажаєте публікувати свої рецепти?</string>
     <!-- FOR GOOGLE API -->
-    <string name="server_client_id">55827698592-8qj8mci54h1k0jboe3nlc1b6bsl2rl9d.apps.googleusercontent.com</string>
+    <string name="server_client_id" translatable="false">55827698592-8qj8mci54h1k0jboe3nlc1b6bsl2rl9d.apps.googleusercontent.com</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 </resources>

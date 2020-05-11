@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.example.foodiesapp.utils.web.StatusCodes;
 
+import javax.inject.Singleton;
+
+@Singleton
 public class UserResponse {
 
     private final StatusCodes statusCodes;
@@ -16,6 +19,7 @@ public class UserResponse {
         this.user = data;
         this.error = error;
     }
+
     public static UserResponse loading() {
         return new UserResponse(StatusCodes.LOADING, null, null);
     }
