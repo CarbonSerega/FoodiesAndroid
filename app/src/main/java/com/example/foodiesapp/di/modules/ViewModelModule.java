@@ -21,7 +21,7 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(SignInViewModel.class)
-    abstract ViewModel bindListViewModel(SignInViewModel signInViewModel);
+    abstract ViewModel bindSignInViewModel(SignInViewModel signInViewModel);
 
 
     @Singleton
