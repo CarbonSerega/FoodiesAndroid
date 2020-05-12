@@ -3,7 +3,11 @@ package com.example.foodiesapp.ui.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,7 +20,6 @@ import com.example.foodiesapp.base.FoodiesFragment;
 import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
 import com.example.foodiesapp.models.User.User;
 import com.example.foodiesapp.models.User.UserResponse;
-import com.example.foodiesapp.utils.ui.NavigationViewSettings;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,28 +28,38 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
 import java.util.Objects;
-import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 public class SignInFragment extends FoodiesFragment {
 
     @Inject
-    public ViewModelFactory viewModelFactory;
+    ViewModelFactory viewModelFactory;
 
     private SignInViewModel signInViewModel;
 
     private GoogleSignInClient gsc;
     private GoogleSignInAccount account;
 
-//    private View userCardView;
-//    private View userCardUnauthedView;
+    private RelativeLayout root;
+
+    private View userCardView;
+    private View userCardUnauthedView;
+
+    @Override
+    protected int layoutRes() {
+        return R.layout.user_card_fragment;
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        root = view.findViewById(R.id.user_card_fragment_view);
+
         signInViewModel = new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
         signInViewModel.signInResponse().observe(getViewLifecycleOwner(), this::consumeResponse);
 
@@ -57,14 +70,23 @@ public class SignInFragment extends FoodiesFragment {
 
         gsc = GoogleSignIn.getClient(requireContext(), gso);
 
-        //userCardUnauthedView = getLayoutInflater().inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
+        LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+        if (inflater != null) {
+            userCardView = inflater.inflate(R.layout.user_card, requireActivity().findViewById(R.id.user_card_view));
+            Button signOutButton = userCardView.findViewById(R.id.left_menu_sign_out_button);
+            signOutButton.setOnClickListener(this::onSignOutClick);
+
+            userCardUnauthedView = inflater.inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
+            Button signInButton = userCardUnauthedView.findViewById(R.id.left_menu_google_sign_in_button);
+            signInButton.setOnClickListener(this::onSignInClick);
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Log.d("ON_START", "stared");
-        this.account = GoogleSignIn.getLastSignedInAccount(requireContext());
+        account = GoogleSignIn.getLastSignedInAccount(requireContext());
         updateUI();
         gsc.silentSignIn().addOnCompleteListener(requireActivity(), this::handleSignInResult);
     }
@@ -85,15 +107,24 @@ public class SignInFragment extends FoodiesFragment {
 
     public void onSignOutClick(View view) {
         gsc.signOut();
-        gsc.revokeAccess().addOnCompleteListener((Executor) this, task -> {
+        gsc.revokeAccess().addOnCompleteListener(requireActivity(), task -> {
             account = null;
             updateUI();
         });
     }
 
     private void updateUI() {
-//        NavigationViewSettings.switchNavigationView(this.account == null,
-//                userCardUnauthedView, getView(), requireActivity().findViewById(R.id.left_sidebar));
+        if(account != null) {
+            if (userCardView.getParent() != null)
+                ((ViewGroup) (userCardView.getParent())).removeView(userCardView);
+            root.removeView(userCardUnauthedView);
+            root.addView(userCardView);
+        } else {
+            if (userCardUnauthedView.getParent() != null)
+                ((ViewGroup) (userCardUnauthedView.getParent())).removeView(userCardUnauthedView);
+            root.removeView(userCardView);
+            root.addView(userCardUnauthedView);
+        }
     }
 
     private void handleSignInResult(@NonNull Task<GoogleSignInAccount> task) {
@@ -146,8 +177,5 @@ public class SignInFragment extends FoodiesFragment {
         Log.d("ERROR", Objects.requireNonNull(error.getMessage()));
     }
 
-    @Override
-    protected int layoutRes() {
-        return R.layout.user_card;
-    }
+
 }

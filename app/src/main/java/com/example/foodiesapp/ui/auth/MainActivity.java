@@ -3,7 +3,6 @@ package com.example.foodiesapp.ui.auth;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -40,9 +39,6 @@ public class MainActivity extends FoodiesActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null)
-            getSupportFragmentManager().beginTransaction().add(R.id.left_sidebar_layout, new SignInFragment()).commit();
-
         //Set-up network connectivity
         networkConnectivity = new Connectivity();
         networkConnectivity.addListener(this);
@@ -61,31 +57,24 @@ public class MainActivity extends FoodiesActivity implements
         searchView.setOnQueryTextListener(this);
     }
 
-
-
     @Override
     protected void onPause() {
         super.onPause();
         unregisterNetworkBroadcastReceiver(this);
-        Log.d("ON_PAUSE", "paused");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerNetworkBroadcastReceiver(this);
-        Log.d("ON_RESUME", "resumed");
     }
-
-
-
 
     public void onLeftMenuIconClick(View view) {
         DrawerLayout drawerLayout = findViewById(R.id.left_sidebar_layout);
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    boolean isFilterMenuPressed = false;
+    private boolean isFilterMenuPressed = false;
 
     public void onFilterCardClick(View view) {
         isFilterMenuPressed = !isFilterMenuPressed;
@@ -138,11 +127,11 @@ public class MainActivity extends FoodiesActivity implements
 
     @Override
     public void networkAvailable() {
-        Toast.makeText(getApplicationContext(), "CONNECTED!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "NETWORK CONNECTED!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void networkUnavailable() {
-        Toast.makeText(getApplicationContext(), "DISCONNECTED!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "NETWORK DISCONNECTED!", Toast.LENGTH_SHORT).show();
     }
 }
