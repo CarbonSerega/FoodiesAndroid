@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -85,7 +86,6 @@ public class SignInFragment extends FoodiesFragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("ON_START", "stared");
         account = GoogleSignIn.getLastSignedInAccount(requireContext());
         updateUI();
         gsc.silentSignIn().addOnCompleteListener(requireActivity(), this::handleSignInResult);
@@ -100,12 +100,12 @@ public class SignInFragment extends FoodiesFragment {
         }
     }
 
-    public void onSignInClick(View view) {
+    private void onSignInClick(View view) {
         Intent signInIntent = gsc.getSignInIntent();
         startActivityForResult(signInIntent, 1);
     }
 
-    public void onSignOutClick(View view) {
+    private void onSignOutClick(View view) {
         gsc.signOut();
         gsc.revokeAccess().addOnCompleteListener(requireActivity(), task -> {
             account = null;
@@ -155,17 +155,28 @@ public class SignInFragment extends FoodiesFragment {
     }
 
     private void handleSuccessResponse(User user) {
-        requireView().findViewById(R.id.left_panel_progress_bar).setVisibility(View.GONE);
-        if(user != null){
-            TextView userNameTextView = requireView().findViewById(R.id.current_user_name_text_view);
-            TextView userEmailTextView = requireView().findViewById(R.id.current_user_email_text_view);
-            CircleImageView userPictureImageView = requireView().findViewById(R.id.current_user_image_view);
+        ProgressBar progressBar = root.findViewById(R.id.left_panel_progress_bar);
 
-            userNameTextView.setText(user.getName());
-            userEmailTextView.setText(user.getEmail());
-            Glide.with(this)
-                    .load(user.getPicture())
-                    .into(userPictureImageView);
+        if (progressBar != null)
+          progressBar.setVisibility(View.GONE);
+
+        if(user != null){
+
+            if(user.getError() == null) {
+                TextView userNameTextView = requireView().findViewById(R.id.current_user_name_text_view);
+                TextView userEmailTextView = requireView().findViewById(R.id.current_user_email_text_view);
+                CircleImageView userPictureImageView = requireView().findViewById(R.id.current_user_image_view);
+
+                userNameTextView.setText(user.getName());
+                userEmailTextView.setText(user.getEmail());
+                Glide.with(this)
+                        .load(user.getPicture())
+                        .into(userPictureImageView);
+            } else {
+                if (user.getError().getDetails() != null) {
+                    Log.d("UserError", user.getError().getDetails());
+                }
+            }
         }
     }
 

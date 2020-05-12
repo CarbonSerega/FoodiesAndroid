@@ -3,6 +3,7 @@ package com.example.foodiesapp.models.User;
 import androidx.annotation.Nullable;
 
 import com.example.foodiesapp.models.Error;
+import com.google.gson.annotations.SerializedName;
 
 public class User {
     private long id;
@@ -12,6 +13,7 @@ public class User {
     private String locale;
 
     @Nullable
+    @SerializedName("error")
     private Error error;
 
 
@@ -33,5 +35,9 @@ public class User {
 
     public String getLocale() {
         return locale;
+    }
+
+    public Error getError() {
+        return error;
     }
 }

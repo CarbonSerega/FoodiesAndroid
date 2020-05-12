@@ -18,7 +18,7 @@ public class SignInViewModel extends ViewModel {
     private  MutableLiveData<UserResponse> userLiveData;
 
     @Inject
-    public SignInViewModel(Repository repository) {
+    SignInViewModel(Repository repository) {
         disposables = new CompositeDisposable();
         userLiveData = new MutableLiveData<>();
         this.repository = repository;
