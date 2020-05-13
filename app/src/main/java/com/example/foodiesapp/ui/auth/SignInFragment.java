@@ -32,6 +32,7 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -50,6 +51,11 @@ public class SignInFragment extends FoodiesFragment {
 
     private View userCardView;
     private View userCardUnauthedView;
+
+    private TextView userNameTextView;
+    private TextView userEmailTextView;
+    private CircleImageView userPictureImageView;
+
 
     @Override
     protected int layoutRes() {
@@ -73,6 +79,8 @@ public class SignInFragment extends FoodiesFragment {
 
         LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
         if (inflater != null) {
+
+
             userCardView = inflater.inflate(R.layout.user_card, requireActivity().findViewById(R.id.user_card_view));
             Button signOutButton = userCardView.findViewById(R.id.left_menu_sign_out_button);
             signOutButton.setOnClickListener(this::onSignOutClick);
@@ -80,6 +88,10 @@ public class SignInFragment extends FoodiesFragment {
             userCardUnauthedView = inflater.inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
             Button signInButton = userCardUnauthedView.findViewById(R.id.left_menu_google_sign_in_button);
             signInButton.setOnClickListener(this::onSignInClick);
+
+            userNameTextView = userCardView.findViewById(R.id.current_user_name_text_view);
+            userEmailTextView = userCardView.findViewById(R.id.current_user_email_text_view);
+            userPictureImageView = userCardView.findViewById(R.id.current_user_image_view);
         }
     }
 
@@ -109,6 +121,7 @@ public class SignInFragment extends FoodiesFragment {
         gsc.signOut();
         gsc.revokeAccess().addOnCompleteListener(requireActivity(), task -> {
             account = null;
+            setValues("", "", null);
             updateUI();
         });
     }
@@ -160,18 +173,9 @@ public class SignInFragment extends FoodiesFragment {
         if (progressBar != null)
           progressBar.setVisibility(View.GONE);
 
-        if(user != null){
-
+        if(user != null) {
             if(user.getError() == null) {
-                TextView userNameTextView = requireView().findViewById(R.id.current_user_name_text_view);
-                TextView userEmailTextView = requireView().findViewById(R.id.current_user_email_text_view);
-                CircleImageView userPictureImageView = requireView().findViewById(R.id.current_user_image_view);
-
-                userNameTextView.setText(user.getName());
-                userEmailTextView.setText(user.getEmail());
-                Glide.with(this)
-                        .load(user.getPicture())
-                        .into(userPictureImageView);
+                setValues(user.getName(), user.getEmail(), user.getPicture());
             } else {
                 if (user.getError().getDetails() != null) {
                     Log.d("UserError", user.getError().getDetails());
@@ -188,5 +192,15 @@ public class SignInFragment extends FoodiesFragment {
         Log.d("ERROR", Objects.requireNonNull(error.getMessage()));
     }
 
-
+    private void setValues(String userName, String userEmail, String userPicture) {
+        userNameTextView.setText(userName);
+        userEmailTextView.setText(userEmail);
+        if(userPicture != null) {
+            Glide.with(this)
+                    .load(userPicture)
+                    .into(userPictureImageView);
+        } else {
+            userPictureImageView.setImageDrawable(null);
+        }
+    }
 }
