@@ -1,14 +1,9 @@
 package com.example.foodiesapp.di.modules;
 
-import com.example.foodiesapp.ui.auth.MainActivity;
-
-import javax.inject.Singleton;
-
-import dagger.Component;
+import com.example.foodiesapp.MainActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import dagger.android.support.AndroidSupportInjectionModule;
 
 @Module
 public abstract class ActivityBindingModule {

@@ -1,5 +1,7 @@
 package com.example.foodiesapp.ui.auth;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 

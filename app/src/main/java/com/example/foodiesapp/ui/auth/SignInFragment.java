@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodiesapp.R;
 import com.example.foodiesapp.base.FoodiesFragment;
 import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
+import com.example.foodiesapp.global.UserPreferences;
 import com.example.foodiesapp.models.User.User;
 import com.example.foodiesapp.models.User.UserResponse;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -28,11 +30,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
@@ -56,6 +59,11 @@ public class SignInFragment extends FoodiesFragment {
     private TextView userEmailTextView;
     private CircleImageView userPictureImageView;
 
+    private Button signOutButton;
+    private Button detailsButton;
+    private ImageView reloader;
+
+    private ProgressBar progressBar;
 
     @Override
     protected int layoutRes() {
@@ -78,12 +86,19 @@ public class SignInFragment extends FoodiesFragment {
         gsc = GoogleSignIn.getClient(requireContext(), gso);
 
         LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
+
         if (inflater != null) {
 
-
             userCardView = inflater.inflate(R.layout.user_card, requireActivity().findViewById(R.id.user_card_view));
-            Button signOutButton = userCardView.findViewById(R.id.left_menu_sign_out_button);
+            signOutButton = userCardView.findViewById(R.id.left_menu_sign_out_button);
             signOutButton.setOnClickListener(this::onSignOutClick);
+
+            detailsButton = userCardView.findViewById(R.id.left_menu_details_button);
+
+            reloader = userCardView.findViewById(R.id.user_card_reloader);
+            reloader.setOnClickListener(this::onSignInClick);
+
+            progressBar = userCardView.findViewById(R.id.left_panel_progress_bar);
 
             userCardUnauthedView = inflater.inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
             Button signInButton = userCardUnauthedView.findViewById(R.id.left_menu_google_sign_in_button);
@@ -121,21 +136,21 @@ public class SignInFragment extends FoodiesFragment {
         gsc.signOut();
         gsc.revokeAccess().addOnCompleteListener(requireActivity(), task -> {
             account = null;
-            setValues("", "", null);
+            UserPreferences.setSignedUserOnNull();
+            setValues();
             updateUI();
         });
     }
 
     private void updateUI() {
-        if(account != null) {
+        root.removeAllViews();
+        if (account != null) {
             if (userCardView.getParent() != null)
                 ((ViewGroup) (userCardView.getParent())).removeView(userCardView);
-            root.removeView(userCardUnauthedView);
             root.addView(userCardView);
         } else {
             if (userCardUnauthedView.getParent() != null)
                 ((ViewGroup) (userCardUnauthedView.getParent())).removeView(userCardUnauthedView);
-            root.removeView(userCardView);
             root.addView(userCardUnauthedView);
         }
     }
@@ -148,8 +163,12 @@ public class SignInFragment extends FoodiesFragment {
                 signInViewModel.callClientSignIn(account.getIdToken());
             }
         } catch (ApiException e) {
+            UserPreferences.setSignedUserOnNull();
             account = null;
-            Log.w("HandleSignInResult", "Error -> ", e);
+            if(e.getStatusCode() != 4) {
+                setValues();
+            }
+            Log.w("HandleSignInResult", "Error:", e);
         }
     }
 
@@ -175,9 +194,12 @@ public class SignInFragment extends FoodiesFragment {
 
         if(user != null) {
             if(user.getError() == null) {
-                setValues(user.getName(), user.getEmail(), user.getPicture());
+                UserPreferences.setSignedUser(user);
+                setValues();
             } else {
                 if (user.getError().getDetails() != null) {
+                    UserPreferences.setSignedUserOnNull();
+                    setValues();
                     Log.d("UserError", user.getError().getDetails());
                 }
             }
@@ -188,13 +210,23 @@ public class SignInFragment extends FoodiesFragment {
         requireView().findViewById(R.id.left_panel_progress_bar).setVisibility(View.VISIBLE);
     }
 
-    private void handleErrorResponse(Throwable error) {
-        Log.d("ERROR", Objects.requireNonNull(error.getMessage()));
+    private void handleErrorResponse(@NotNull Throwable error) {
+        UserPreferences.setSignedUserOnNull();
+        setValues();
+        Log.d("User response err", Objects.requireNonNull(error.getMessage()));
     }
 
-    private void setValues(String userName, String userEmail, String userPicture) {
-        userNameTextView.setText(userName);
-        userEmailTextView.setText(userEmail);
+    private void setValues() {
+        User signedUser = UserPreferences.getSignedUser();
+
+        signOutButton.setVisibility(signedUser != null ? View.VISIBLE : View.GONE);
+        detailsButton.setVisibility(signedUser != null ? View.VISIBLE : View.GONE);
+
+        userNameTextView.setText(signedUser != null ? signedUser.getName() : "");
+        userEmailTextView.setText(signedUser != null ? signedUser.getEmail() : "");
+
+        String userPicture = signedUser != null ? signedUser.getPicture() : null;
+
         if(userPicture != null) {
             Glide.with(this)
                     .load(userPicture)

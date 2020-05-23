@@ -7,4 +7,5 @@
     <color name="userCardColor">#F2F2F2</color>
     <color name="userCardDetailsColor">#E1E1E1</color>
     <color name="userGrayColor">#A2A2A2</color>
+    <color name="errorColor">#FF5757</color>
 </resources>

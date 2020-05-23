@@ -44,7 +44,6 @@
         android:text="@string/title_user_sign_in"
         android:textColor="@color/userGrayColor"
         android:textSize="18sp"
-        android:onClick="onSignInClick"
         app:backgroundTint="@color/userCardDetailsColor"
         />
 

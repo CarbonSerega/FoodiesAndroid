@@ -17,6 +17,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.foodiesapp.R;
 import com.example.foodiesapp.base.FoodiesActivity;
+import com.example.foodiesapp.global.NetworkPreference;
 import com.example.foodiesapp.utils.ui.AppBarTuner;
 import com.example.foodiesapp.utils.web.Connectivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -127,11 +128,11 @@ public class MainActivity extends FoodiesActivity implements
 
     @Override
     public void networkAvailable() {
-        //Toast.makeText(getApplicationContext(), "NETWORK CONNECTED!", Toast.LENGTH_SHORT).show();
+        NetworkPreference.setIsConnected(true);
     }
 
     @Override
     public void networkUnavailable() {
-        //Toast.makeText(getApplicationContext(), "NETWORK DISCONNECTED!", Toast.LENGTH_SHORT).show();
+        NetworkPreference.setIsConnected(false);
     }
 }
