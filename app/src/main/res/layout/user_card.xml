@@ -20,6 +20,17 @@
 
     </de.hdodenhof.circleimageview.CircleImageView>
 
+    <TextView
+        android:id="@+id/user_card_error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/errorColor"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/left_panel_progress_bar"
         android:layout_width="match_parent"
@@ -33,16 +44,18 @@
         android:id="@+id/user_card_reloader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_below="@+id/user_card_error_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:background="@drawable/left_menu_user_layout_bg_rounded"
-        android:theme="@style/AppTheme.PrimaryDarkAccent"
+        android:contentDescription="@string/user_card_error"
         android:indeterminate="true"
-        android:src="@drawable/ic_reload_icon"
         android:padding="10dp"
+        android:src="@drawable/ic_reload_icon"
+        android:theme="@style/AppTheme.PrimaryDarkAccent"
         android:tint="@color/colorSecondary"
-        app:backgroundTint="@color/errorColor"
         android:visibility="gone"
-        android:contentDescription="@string/user_card_error" />
+        app:backgroundTint="@color/errorColor" />
 
     <Button
         android:id="@+id/left_menu_sign_out_button"
@@ -93,7 +106,6 @@
             android:singleLine="true"
             android:textColor="@color/userGrayColor"
             android:textSize="20sp" />
-
 
     </RelativeLayout>
 

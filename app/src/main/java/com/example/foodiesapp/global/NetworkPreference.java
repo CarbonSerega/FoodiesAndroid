@@ -3,7 +3,7 @@ package com.example.foodiesapp.global;
 public final class NetworkPreference {
     private static boolean isConnected;
 
-    public static boolean isIsConnected() {
+    public static boolean isConnected() {
         return isConnected;
     }
 

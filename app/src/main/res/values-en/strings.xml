@@ -14,5 +14,5 @@
     <string name="user_card_error">Something went wrong :(</string>
     <string name="user_card_google_services_error">Google Play response error :(</string>
     <string name="user_card_server_error">Server error occured :(</string>
-    <string name="user_card_timeout_error">Response time out :(</string>
+    <string name="user_card_timeout_error">Server connection error :(</string>
 </resources>

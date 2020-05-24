@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.example.foodiesapp.R;
 import com.example.foodiesapp.base.FoodiesFragment;
 import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
+import com.example.foodiesapp.global.NetworkPreference;
 import com.example.foodiesapp.global.UserPreferences;
 import com.example.foodiesapp.models.User.User;
 import com.example.foodiesapp.models.User.UserResponse;
@@ -57,6 +58,7 @@ public class SignInFragment extends FoodiesFragment {
 
     private TextView userNameTextView;
     private TextView userEmailTextView;
+    private TextView userCardErrorTextView;
     private CircleImageView userPictureImageView;
 
     private Button signOutButton;
@@ -73,6 +75,7 @@ public class SignInFragment extends FoodiesFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         root = view.findViewById(R.id.user_card_fragment_view);
 
         signInViewModel = new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
@@ -97,6 +100,8 @@ public class SignInFragment extends FoodiesFragment {
 
             reloader = userCardView.findViewById(R.id.user_card_reloader);
             reloader.setOnClickListener(this::onSignInClick);
+
+            userCardErrorTextView = userCardView.findViewById(R.id.user_card_error_text);
 
             progressBar = userCardView.findViewById(R.id.left_panel_progress_bar);
 
@@ -133,13 +138,19 @@ public class SignInFragment extends FoodiesFragment {
     }
 
     private void onSignOutClick(View view) {
-        gsc.signOut();
-        gsc.revokeAccess().addOnCompleteListener(requireActivity(), task -> {
-            account = null;
+        if(NetworkPreference.isConnected()) {
+            gsc.signOut();
+            gsc.revokeAccess().addOnCompleteListener(requireActivity(), task -> {
+                account = null;
+                UserPreferences.setSignedUserOnNull();
+                updateValues();
+                updateUI();
+            });
+        } else {
             UserPreferences.setSignedUserOnNull();
-            setValues();
-            updateUI();
-        });
+            updateValues();
+            showUserCardReloader(R.string.user_card_timeout_error);
+        }
     }
 
     private void updateUI() {
@@ -166,7 +177,8 @@ public class SignInFragment extends FoodiesFragment {
             UserPreferences.setSignedUserOnNull();
             account = null;
             if(e.getStatusCode() != 4) {
-                setValues();
+                updateValues();
+                showUserCardReloader(R.string.user_card_google_services_error);
             }
             Log.w("HandleSignInResult", "Error:", e);
         }
@@ -187,19 +199,18 @@ public class SignInFragment extends FoodiesFragment {
     }
 
     private void handleSuccessResponse(User user) {
-        ProgressBar progressBar = root.findViewById(R.id.left_panel_progress_bar);
-
         if (progressBar != null)
           progressBar.setVisibility(View.GONE);
 
         if(user != null) {
             if(user.getError() == null) {
                 UserPreferences.setSignedUser(user);
-                setValues();
+                updateValues();
             } else {
                 if (user.getError().getDetails() != null) {
                     UserPreferences.setSignedUserOnNull();
-                    setValues();
+                    updateValues();
+                    showUserCardReloader(R.string.user_card_server_error);
                     Log.d("UserError", user.getError().getDetails());
                 }
             }
@@ -207,16 +218,23 @@ public class SignInFragment extends FoodiesFragment {
     }
 
     private void handleLoadingResponse() {
-        requireView().findViewById(R.id.left_panel_progress_bar).setVisibility(View.VISIBLE);
+        if(NetworkPreference.isConnected()) {
+            hideUserCardReloader();
+        } else {
+            UserPreferences.setSignedUserOnNull();
+            updateValues();
+            showUserCardReloader(R.string.user_card_timeout_error);
+        }
     }
 
     private void handleErrorResponse(@NotNull Throwable error) {
         UserPreferences.setSignedUserOnNull();
-        setValues();
+        updateValues();
+        showUserCardReloader(R.string.user_card_timeout_error);
         Log.d("User response err", Objects.requireNonNull(error.getMessage()));
     }
 
-    private void setValues() {
+    private void updateValues() {
         User signedUser = UserPreferences.getSignedUser();
 
         signOutButton.setVisibility(signedUser != null ? View.VISIBLE : View.GONE);
@@ -234,5 +252,19 @@ public class SignInFragment extends FoodiesFragment {
         } else {
             userPictureImageView.setImageDrawable(null);
         }
+    }
+
+    private void showUserCardReloader(int errString) {
+        progressBar.setVisibility(View.GONE);
+        reloader.setVisibility(View.VISIBLE);
+        userCardErrorTextView.setVisibility(View.VISIBLE);
+        userCardErrorTextView.setText(errString);
+    }
+
+    private void hideUserCardReloader() {
+        progressBar.setVisibility(View.VISIBLE);
+        reloader.setVisibility(View.GONE);
+        userCardErrorTextView.setVisibility(View.GONE);
+        userCardErrorTextView.setText("");
     }
 }

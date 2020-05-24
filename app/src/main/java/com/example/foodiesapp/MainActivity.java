@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.SearchView;
@@ -15,7 +14,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.foodiesapp.R;
 import com.example.foodiesapp.base.FoodiesActivity;
 import com.example.foodiesapp.global.NetworkPreference;
 import com.example.foodiesapp.utils.ui.AppBarTuner;
