@@ -1,7 +1,5 @@
 package com.example.foodiesapp.ui.auth;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class SignInViewModel extends ViewModel {
+public final class SignInViewModel extends ViewModel {
     private Repository repository;
     private  CompositeDisposable disposables;
     private  MutableLiveData<UserResponse> userLiveData;

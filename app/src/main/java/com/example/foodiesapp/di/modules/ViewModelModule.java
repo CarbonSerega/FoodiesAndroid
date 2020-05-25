@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.foodiesapp.di.keys.ViewModelKey;
 import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
 import com.example.foodiesapp.ui.auth.SignInViewModel;
+import com.example.foodiesapp.ui.home.HomeViewModel;
 
 import javax.inject.Singleton;
 
@@ -22,6 +23,12 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignInViewModel.class)
     abstract ViewModel bindSignInViewModel(SignInViewModel signInViewModel);
+
+    @Singleton
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeViewModel.class)
+    abstract ViewModel bindHomeViewModel(HomeViewModel homeViewModel);
 
 
     @Singleton

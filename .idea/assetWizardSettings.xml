@@ -30,8 +30,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_reload_icon" />
-                            <entry key="sourceFile" value="E:\AndroidProjects\TestResources\reload_icon.svg" />
+                            <entry key="outputName" value="ic_time_icon" />
+                            <entry key="sourceFile" value="E:\AndroidProjects\TestResources\time_icon.svg" />
                           </map>
                         </option>
                       </PersistentState>

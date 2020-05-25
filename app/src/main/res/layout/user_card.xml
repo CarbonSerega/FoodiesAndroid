@@ -16,9 +16,7 @@
         android:layout_height="76dp"
         android:layout_marginStart="10dp"
         android:contentDescription="@string/user_picture_hint"
-        android:src="@color/userCardDetailsColor">
-
-    </de.hdodenhof.circleimageview.CircleImageView>
+        android:src="@color/userCardDetailsColor"/>
 
     <TextView
         android:id="@+id/user_card_error_text"

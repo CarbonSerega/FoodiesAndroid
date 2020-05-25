@@ -19,14 +19,4 @@ public final class UserPreferences {
     public static void setSignedUserOnNull() {
         UserPreferences.signedUser = null;
     }
-
-
-    public static boolean isHasError() {
-        return hasError;
-    }
-
-    public static void setHasError(boolean hasError) {
-        UserPreferences.hasError = hasError;
-        setSignedUserOnNull();
-    }
 }

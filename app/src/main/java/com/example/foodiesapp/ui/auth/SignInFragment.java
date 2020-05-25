@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public class SignInFragment extends FoodiesFragment {
+public final class SignInFragment extends FoodiesFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
@@ -172,6 +172,7 @@ public class SignInFragment extends FoodiesFragment {
             if(account != null) {
                 updateUI();
                 signInViewModel.callClientSignIn(account.getIdToken());
+                Log.d("TOKEN", account.getIdToken());
             }
         } catch (ApiException e) {
             UserPreferences.setSignedUserOnNull();
