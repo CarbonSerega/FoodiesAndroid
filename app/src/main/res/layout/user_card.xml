@@ -124,12 +124,4 @@
         android:textColor="@color/colorSecondary"
         app:backgroundTint="@color/colorPrimary" />
 
-<!--    <include-->
-<!--        layout="@layout/authorize_settings_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/current_user_info"-->
-<!--        android:layout_marginTop="20dp" />-->
-
-
 </RelativeLayout>

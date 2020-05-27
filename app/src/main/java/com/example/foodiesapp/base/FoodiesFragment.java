@@ -10,12 +10,9 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import dagger.android.support.DaggerFragment;
 
 public abstract class FoodiesFragment extends DaggerFragment {
-    private Unbinder unbinder;
     private AppCompatActivity activity;
 
     @LayoutRes
@@ -23,9 +20,7 @@ public abstract class FoodiesFragment extends DaggerFragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(layoutRes(), container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
+        return inflater.inflate(layoutRes(), container, false);
     }
 
     @Override
@@ -40,16 +35,12 @@ public abstract class FoodiesFragment extends DaggerFragment {
         activity = null;
     }
 
-    public AppCompatActivity getBaseActivity() {
+    protected AppCompatActivity getBaseActivity() {
         return activity;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(unbinder != null) {
-            unbinder.unbind();
-            unbinder = null;
-        }
     }
 }

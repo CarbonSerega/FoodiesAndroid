@@ -26,4 +26,5 @@
     <string name="user_card_google_services_error">" Помилка підключення Google Play :("</string>
     <string name="user_card_server_error">Трапилася помилка на сервері  :(</string>
     <string name="user_card_timeout_error">Помилка підключення до серверу  :(</string>
+    <string name="hash_tag" translatable="false">#</string>
 </resources>

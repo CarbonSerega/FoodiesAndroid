@@ -7,6 +7,7 @@ import com.example.foodiesapp.models.Error;
 import com.example.foodiesapp.models.Ingredient.Ingredient;
 import com.example.foodiesapp.models.Step.Step;
 import com.example.foodiesapp.models.User.User;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -15,15 +16,19 @@ public class Post {
     private long id;
     private String title;
     private String cooktime;
+
+    @SerializedName("img")
     private String image;
+
     private String description;
-    private Date pubtime;
+    private String pubtime;
     private int shares;
     private int likes;
     private float proteins;
     private float lipids;
     private float carbohydrates;
     private float calorific;
+    private boolean likedByUser;
 
     private User user;
     private Cuisine cuisine;
@@ -31,8 +36,6 @@ public class Post {
     private List<Ingredient> ingredients;
     private List<Assignment> assignments;
     private List<Step> steps;
-
-    private Error error;
 
     public long getId() {
         return id;
@@ -54,7 +57,7 @@ public class Post {
         return description;
     }
 
-    public Date getPubtime() {
+    public String getPubtime() {
         return pubtime;
     }
 
@@ -106,7 +109,7 @@ public class Post {
         return steps;
     }
 
-    public Error getError() {
-        return error;
+    public boolean isLikedByUser() {
+        return likedByUser;
     }
 }

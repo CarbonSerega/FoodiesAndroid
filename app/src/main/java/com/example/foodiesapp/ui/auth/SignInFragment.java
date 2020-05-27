@@ -23,7 +23,7 @@ import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
 import com.example.foodiesapp.global.NetworkPreference;
 import com.example.foodiesapp.global.UserPreferences;
 import com.example.foodiesapp.models.User.User;
-import com.example.foodiesapp.models.User.UserResponse;
+import com.example.foodiesapp.models.User.UserResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +45,7 @@ public final class SignInFragment extends FoodiesFragment {
 
     @Inject
     ViewModelFactory viewModelFactory;
+
 
     private SignInViewModel signInViewModel;
 
@@ -145,6 +146,7 @@ public final class SignInFragment extends FoodiesFragment {
                 UserPreferences.setSignedUserOnNull();
                 updateValues();
                 updateUI();
+                signInViewModel.callClientSignIn(null);
             });
         } else {
             UserPreferences.setSignedUserOnNull();
@@ -172,11 +174,12 @@ public final class SignInFragment extends FoodiesFragment {
             if(account != null) {
                 updateUI();
                 signInViewModel.callClientSignIn(account.getIdToken());
-                Log.d("TOKEN", account.getIdToken());
+                Log.d("TOKEN", Objects.requireNonNull(account.getIdToken()));
             }
         } catch (ApiException e) {
             UserPreferences.setSignedUserOnNull();
             account = null;
+            signInViewModel.callClientSignIn(null);
             if(e.getStatusCode() != 4) {
                 updateValues();
                 showUserCardReloader(R.string.user_card_google_services_error);
@@ -185,16 +188,16 @@ public final class SignInFragment extends FoodiesFragment {
         }
     }
 
-    private void consumeResponse(@NonNull UserResponse userResponse) {
-        switch (userResponse.getStatusCode()) {
+    private void consumeResponse(@NonNull UserResult userResult) {
+        switch (userResult.getStatusCode()) {
             case LOADING:
                 handleLoadingResponse();
                 break;
             case SUCCESS:
-                handleSuccessResponse(userResponse.getUser());
+                handleSuccessResponse(userResult.getUser());
                 break;
             case ERROR:
-                handleErrorResponse(userResponse.getError());
+                handleErrorResponse(userResult.getError());
                 break;
         }
     }
@@ -268,4 +271,5 @@ public final class SignInFragment extends FoodiesFragment {
         userCardErrorTextView.setVisibility(View.GONE);
         userCardErrorTextView.setText("");
     }
+
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 
-import butterknife.ButterKnife;
 import dagger.android.support.DaggerAppCompatActivity;
 
 public abstract class FoodiesActivity extends DaggerAppCompatActivity {
@@ -16,6 +15,5 @@ public abstract class FoodiesActivity extends DaggerAppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(layoutRes());
-        ButterKnife.bind(this);
     }
 }

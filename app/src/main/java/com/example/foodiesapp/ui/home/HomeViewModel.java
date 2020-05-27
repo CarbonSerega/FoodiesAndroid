@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.foodiesapp.models.Post.PostRequest;
-import com.example.foodiesapp.models.Post.PostResponse;
+import com.example.foodiesapp.models.Post.PostResult;
 import com.example.foodiesapp.repository.Repository;
 
 import javax.inject.Inject;
@@ -16,7 +16,7 @@ import io.reactivex.schedulers.Schedulers;
 public final class HomeViewModel extends ViewModel {
     private Repository repository;
     private CompositeDisposable disposables;
-    private MutableLiveData<PostResponse> postsLiveData;
+    private MutableLiveData<PostResult> postsLiveData;
 
     @Inject
     HomeViewModel(Repository repository) {
@@ -25,7 +25,7 @@ public final class HomeViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    MutableLiveData<PostResponse> signInResponse() {
+    public MutableLiveData<PostResult> getPostsResponse() {
         return postsLiveData;
     }
 
@@ -33,10 +33,10 @@ public final class HomeViewModel extends ViewModel {
         disposables.add(repository.getPosts(postRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe((d) -> postsLiveData.setValue(PostResponse.loading()))
+                .doOnSubscribe((d) -> postsLiveData.setValue(PostResult.loading()))
                 .subscribe(
-                        result -> postsLiveData.setValue(PostResponse.success(result)),
-                        throwable -> postsLiveData.setValue(PostResponse.error(throwable))
+                        result -> postsLiveData.setValue(PostResult.success(result)),
+                        throwable -> postsLiveData.setValue(PostResult.error(throwable))
                 ));
     }
 

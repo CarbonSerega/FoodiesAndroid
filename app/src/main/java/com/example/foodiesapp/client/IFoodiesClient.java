@@ -12,8 +12,6 @@ import io.reactivex.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 
 public interface IFoodiesClient {
@@ -22,7 +20,6 @@ public interface IFoodiesClient {
     @POST(Endpoints.USER_SIGN_IN)
     Observable<User> signIn(@Field("token") String token);
 
-    @Multipart
-    @GET(Endpoints.POST_GET)
-    Observable<List<Post>> getPosts(@Body PostRequest postRequest);
+    @POST(Endpoints.POST_GET)
+    Observable<PostResponse> getPosts(@Body PostRequest postRequest);
 }

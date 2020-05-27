@@ -21,7 +21,7 @@ public class Repository {
         return foodiesClient.signIn(token);
     }
 
-    public Observable<List<Post>> getPosts(PostRequest postRequest) {
+    public Observable<PostResponse> getPosts(PostRequest postRequest) {
         return foodiesClient.getPosts(postRequest);
     }
 }
