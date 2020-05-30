@@ -23,6 +23,7 @@ import com.example.foodiesapp.models.User.User;
 import com.example.foodiesapp.ui.adapters.adapter.post.PostListAdapter;
 import com.example.foodiesapp.ui.adapters.adapter.post.PostSelectedListener;
 import com.example.foodiesapp.ui.auth.SignInViewModel;
+import com.example.foodiesapp.ui.requestManagers.PostRequestManger;
 
 import java.util.Objects;
 
@@ -60,8 +61,7 @@ public final class HomeFragment extends FoodiesFragment implements PostSelectedL
             switch (e.getStatusCode()){
                 case LOADING:
                     break;
-                case SUCCESS: case ERROR: homeViewModel.callGetPosts(createDefaultPostRequest());  break;
-
+                case SUCCESS: case ERROR: homeViewModel.callGetPosts(PostRequestManger.withUserRequest(e.getUser()));  break;
             }
         });
 
@@ -105,16 +105,4 @@ public final class HomeFragment extends FoodiesFragment implements PostSelectedL
         Log.d("POSTS_ERROR", Objects.requireNonNull(error.getMessage()));
     }
 
-    private PostRequest createDefaultPostRequest() {
-        User user = UserPreferences.getSignedUser();
-        Log.d("USER_INNER", user == null ? "NULL" : user.getName());
-        return new PostRequest(
-                user != null ? user.getId() : -1,
-                user != null ? user.getLocale() : null,
-                -1,
-                null,
-                null,
-                null
-        );
-    }
 }

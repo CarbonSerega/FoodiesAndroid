@@ -1,12 +1,9 @@
 package com.example.foodiesapp.client;
 
-import com.example.foodiesapp.models.Post.Post;
 import com.example.foodiesapp.models.Post.PostRequest;
 import com.example.foodiesapp.models.Post.PostResponse;
 import com.example.foodiesapp.models.User.User;
 import com.example.foodiesapp.utils.web.Endpoints;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;

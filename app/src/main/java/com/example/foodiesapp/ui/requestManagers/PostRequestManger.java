@@ -25,4 +25,15 @@ public final class PostRequestManger {
                 null
         );
     }
+
+    public static PostRequest searchPostRequest(User user, String searchContext) {
+        return new PostRequest(
+                user != null ? user.getId() : -1,
+                user != null ? user.getLocale() : null,
+                -1,
+                null,
+                searchContext,
+                null
+        );
+    }
 }
