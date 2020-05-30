@@ -11,4 +11,8 @@
     <string name="title_user_sign_out">Sign out</string>
     <string name="title_user_sign_in">Sign in</string>
     <string name="title_user_anauthed">Let\'s show your recipes the world!</string>
+    <string name="user_card_error">Something went wrong :(</string>
+    <string name="user_card_google_services_error">Google Play response error :(</string>
+    <string name="user_card_server_error">Server error occured :(</string>
+    <string name="user_card_timeout_error">Server connection error :(</string>
 </resources>

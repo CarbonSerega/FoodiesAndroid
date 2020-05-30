@@ -35,7 +35,7 @@ public class Connectivity extends BroadcastReceiver {
 
         if(networkInfo != null && networkInfo.getState() == NetworkInfo.State.CONNECTED) {
             connected = true;
-        } else if(intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) { 
+        } else if(intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, Boolean.FALSE)) {
             connected = false;
         }
 

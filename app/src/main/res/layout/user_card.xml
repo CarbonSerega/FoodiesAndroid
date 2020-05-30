@@ -16,9 +16,18 @@
         android:layout_height="76dp"
         android:layout_marginStart="10dp"
         android:contentDescription="@string/user_picture_hint"
-        android:src="@color/userCardDetailsColor">
+        android:src="@color/userCardDetailsColor"/>
 
-    </de.hdodenhof.circleimageview.CircleImageView>
+    <TextView
+        android:id="@+id/user_card_error_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/errorColor"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/left_panel_progress_bar"
@@ -26,7 +35,25 @@
         android:layout_height="72dp"
         android:layout_centerInParent="true"
         android:theme="@style/AppTheme.PrimaryDarkAccent"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/user_card_reloader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_card_error_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/left_menu_user_layout_bg_rounded"
+        android:contentDescription="@string/user_card_error"
+        android:indeterminate="true"
+        android:padding="10dp"
+        android:src="@drawable/ic_reload_icon"
+        android:theme="@style/AppTheme.PrimaryDarkAccent"
+        android:tint="@color/colorSecondary"
+        android:visibility="gone"
+        app:backgroundTint="@color/errorColor" />
 
     <Button
         android:id="@+id/left_menu_sign_out_button"
@@ -47,7 +74,6 @@
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
         android:textColor="@color/userGrayColor"
-        android:onClick="onSignOutClick"
         app:backgroundTint="@color/userCardDetailsColor"/>
 
     <RelativeLayout
@@ -79,7 +105,6 @@
             android:textColor="@color/userGrayColor"
             android:textSize="20sp" />
 
-
     </RelativeLayout>
 
     <Button
@@ -98,13 +123,5 @@
         android:text="@string/title_user_details"
         android:textColor="@color/colorSecondary"
         app:backgroundTint="@color/colorPrimary" />
-
-<!--    <include-->
-<!--        layout="@layout/authorize_settings_view"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@+id/current_user_info"-->
-<!--        android:layout_marginTop="20dp" />-->
-
 
 </RelativeLayout>

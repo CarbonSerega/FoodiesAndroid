@@ -1,30 +1,108 @@
 package com.example.foodiesapp.ui.home;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodiesapp.R;
+import com.example.foodiesapp.base.FoodiesFragment;
+import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
+import com.example.foodiesapp.global.UserPreferences;
+import com.example.foodiesapp.models.Post.Post;
+import com.example.foodiesapp.models.Post.PostRequest;
+import com.example.foodiesapp.models.Post.PostResult;
+import com.example.foodiesapp.models.User.User;
+import com.example.foodiesapp.ui.adapters.adapter.post.PostListAdapter;
+import com.example.foodiesapp.ui.adapters.adapter.post.PostSelectedListener;
+import com.example.foodiesapp.ui.auth.SignInViewModel;
+import com.example.foodiesapp.ui.requestManagers.PostRequestManger;
 
-public class HomeFragment extends Fragment {
+import java.util.Objects;
+
+import javax.inject.Inject;
+
+public final class HomeFragment extends FoodiesFragment implements PostSelectedListener {
+
+    @Inject
+    ViewModelFactory viewModelFactory;
 
     private HomeViewModel homeViewModel;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), s -> textView.setText(s));
-        return root;
+    private SignInViewModel signInViewModel;
+
+    private RecyclerView postsView;
+
+    private ProgressBar recyclerViewProgressBar;
+
+    @Override
+    protected int layoutRes() {
+        return R.layout.fragment_home;
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerViewProgressBar = view.findViewById(R.id.recycler_view_progress_bar);
+
+        homeViewModel = new ViewModelProvider(this, viewModelFactory).get(HomeViewModel.class);
+        signInViewModel = new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
+
+
+        signInViewModel.signInResponse().observe(getViewLifecycleOwner(), e -> {
+            switch (e.getStatusCode()){
+                case LOADING:
+                    break;
+                case SUCCESS: case ERROR: homeViewModel.callGetPosts(PostRequestManger.withUserRequest(e.getUser()));  break;
+            }
+        });
+
+        homeViewModel.getPostsResponse().observe(getViewLifecycleOwner(), this::consumeResponse);
+        postsView = requireActivity().findViewById(R.id.post_recycler_view);
+        postsView.addItemDecoration(new DividerItemDecoration(getBaseActivity(), DividerItemDecoration.VERTICAL));
+        postsView.setAdapter(new PostListAdapter(homeViewModel, this, this));
+        postsView.setLayoutManager(new LinearLayoutManager(getContext()));
+    }
+
+    @Override
+    public void onPostSelected(Post post) {
+
+    }
+
+    private void consumeResponse(@NonNull PostResult postResult) {
+        switch (postResult.getStatusCode()){
+            case LOADING:
+                handleLoadingResponse();
+                break;
+            case SUCCESS:
+                handleSuccessResponse(postResult);
+                break;
+            case ERROR:
+                handleErrorResponse(postResult.getError());
+                break;
+        }
+    }
+
+    private void handleLoadingResponse() {
+        recyclerViewProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void handleSuccessResponse(PostResult postResult) {
+        if(postResult.getPostResponse() != null) {
+            recyclerViewProgressBar.setVisibility(View.GONE);
+        }
+    }
+
+    private void handleErrorResponse(Throwable error) {
+        Log.d("POSTS_ERROR", Objects.requireNonNull(error.getMessage()));
+    }
+
 }

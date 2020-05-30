@@ -20,13 +20,13 @@
                       </LayoutPositions>
                     </value>
                   </entry>
-                  <entry key="navigation_notifications">
+                  <entry key="user_card_fragment">
                     <value>
                       <LayoutPositions>
                         <option name="myPosition">
                           <Point>
-                            <option name="x" value="576" />
-                            <option name="y" value="-15" />
+                            <option name="x" value="-94" />
+                            <option name="y" value="-20" />
                           </Point>
                         </option>
                       </LayoutPositions>

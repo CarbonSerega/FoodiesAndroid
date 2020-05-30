@@ -1,16 +1,19 @@
-package com.example.foodiesapp.di;
+package com.example.foodiesapp.di.modules;
 
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.foodiesapp.client.IFoodiesClient;
-import com.example.foodiesapp.factory.ViewModelFactory;
+import com.example.foodiesapp.di.modules.factory.ViewModelFactory;
 import com.example.foodiesapp.repository.Repository;
 import com.example.foodiesapp.utils.web.Endpoints;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -21,8 +24,9 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-@Module
-public class ClientBuilder {
+
+@Module(includes = ViewModelModule.class)
+public class ApplicationModule {
     @Provides
     @Singleton
     Gson provideGson() {
@@ -76,6 +80,6 @@ public class ClientBuilder {
     @Provides
     @Singleton
     ViewModelProvider.Factory getViewModelFactory(Repository repository) {
-        return new ViewModelFactory(repository);
+        return new ViewModelFactory((Map<Class<? extends ViewModel>, Provider<ViewModel>>) repository);
     }
 }

@@ -7,29 +7,29 @@ import com.example.foodiesapp.utils.web.StatusCodes;
 import javax.inject.Singleton;
 
 @Singleton
-public class UserResponse {
+public class UserResult {
 
     private final StatusCodes statusCodes;
     private final User user;
     private final Throwable error;
 
-    private UserResponse(StatusCodes statusCodes, User data, Throwable error) {
+    private UserResult(StatusCodes statusCodes, User data, Throwable error) {
 
         this.statusCodes = statusCodes;
         this.user = data;
         this.error = error;
     }
 
-    public static UserResponse loading() {
-        return new UserResponse(StatusCodes.LOADING, null, null);
+    public static UserResult loading() {
+        return new UserResult(StatusCodes.LOADING, null, null);
     }
 
-    public static UserResponse success(@NonNull User data) {
-        return new UserResponse(StatusCodes.SUCCESS, data, null);
+    public static UserResult success(@NonNull User data) {
+        return new UserResult(StatusCodes.SUCCESS, data, null);
     }
 
-    public static UserResponse error(@NonNull Throwable error) {
-        return new UserResponse(StatusCodes.ERROR, null, error);
+    public static UserResult error(@NonNull Throwable error) {
+        return new UserResult(StatusCodes.ERROR, null, error);
     }
 
     public StatusCodes getStatusCode() {

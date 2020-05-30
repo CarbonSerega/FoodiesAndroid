@@ -30,8 +30,8 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_google_icon" />
-                            <entry key="sourceFile" value="E:\AndroidProjects\TestResources\google_icon.svg" />
+                            <entry key="outputName" value="ic_like_icon" />
+                            <entry key="sourceFile" value="E:\AndroidProjects\TestResources\like_icon.svg" />
                           </map>
                         </option>
                       </PersistentState>
