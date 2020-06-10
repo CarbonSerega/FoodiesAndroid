@@ -20,11 +20,15 @@
     <!-- FOR GOOGLE API -->
     <string name="server_client_id" translatable="false">55827698592-8qj8mci54h1k0jboe3nlc1b6bsl2rl9d.apps.googleusercontent.com</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="user_card_error">Щось пішло не так :(</string>
     <string name="user_card_google_services_error">" Помилка підключення Google Play :("</string>
     <string name="user_card_server_error">Трапилася помилка на сервері  :(</string>
     <string name="user_card_timeout_error">Помилка підключення до серверу  :(</string>
     <string name="hash_tag" translatable="false">#</string>
+    <string name="seconds_ago">щойно</string>
+    <string name="minutes_ago">хв назад</string>
+    <string name="hours_ago">год назад</string>
+    <string name="days_ago">д назад</string>
 </resources>

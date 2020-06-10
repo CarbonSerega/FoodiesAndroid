@@ -16,8 +16,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/current_user_image_view"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
             android:contentDescription="@string/user_picture_hint"
@@ -36,7 +36,7 @@
             android:maxLines="3"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <RelativeLayout
@@ -65,7 +65,7 @@
                 android:layout_below="@+id/cook_time_icon"
                 android:layout_marginTop="0dp"
                 android:textColor="@color/userGrayColor"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -79,6 +79,7 @@
             android:layout_height="300dp"
             android:background="@color/userCardDetailsColor"
             tools:ignore="ContentDescription" />
+
         <TextView
             android:id="@+id/category_text_view"
             android:layout_width="wrap_content"
@@ -91,29 +92,30 @@
             android:layout_margin="10dp"
             android:textAlignment="center"
             android:textColor="@color/colorSecondary"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:background="@drawable/left_menu_user_layout_bg_rounded"
             app:backgroundTint="@color/imageDarkMaskColor" />
 
     </RelativeLayout>
 
-
-
-
-    <androidx.recyclerview.widget.RecyclerView
+   <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ingredients_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/userCardDetailsColor"
-        android:padding="15dp" />
+        android:background="@color/colorSecondary"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/hashtags_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/hashtagsColor"
         android:orientation="horizontal"
-        android:padding="15dp" />
+        android:padding="5dp" />
 
     <com.uncopt.android.widget.text.justify.JustifiedTextView
         android:id="@+id/post_description_text_view"
@@ -124,12 +126,14 @@
         android:paddingEnd="15dp"
         android:textColor="@color/userGrayColor"
         android:textSize="18sp"
+        android:layout_marginTop="10dp"
         app:lineHeight="30dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp">
 
         <TextView
             android:id="@+id/post_pub_time_text_view"
@@ -141,7 +145,7 @@
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
             android:textColor="@color/userGrayColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:lineHeight="30dp" />
 
         <ImageView
@@ -164,8 +168,9 @@
             android:maxLines="1"
             android:paddingStart="15dp"
             android:paddingEnd="15dp"
+            android:paddingTop="1dp"
             android:textColor="@color/userGrayColor"
-            android:textSize="20sp"
+            android:textSize="18sp"
             app:lineHeight="30dp" />
     </RelativeLayout>
 

@@ -3,6 +3,7 @@ package com.example.foodiesapp;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -29,6 +30,8 @@ public class MainActivity extends FoodiesActivity implements
 
     private Connectivity networkConnectivity;
 
+    public static SearchView searchView;
+
     @Override
     protected int layoutRes() {
         return R.layout.activity_main;
@@ -52,7 +55,7 @@ public class MainActivity extends FoodiesActivity implements
         //Action bar set-up
         setSupportActionBar(findViewById(R.id.tuned_toolbar));
         ActionBar actionBar = AppBarTuner.tunedToolBar(getSupportActionBar(), R.layout.app_bar);
-        SearchView searchView = AppBarTuner.tunedSearchView(actionBar, findViewById(R.id.search_view), findViewById(R.id.left_menu_icon));
+        searchView = AppBarTuner.tunedSearchView(actionBar, findViewById(R.id.search_view), findViewById(R.id.left_menu_icon));
         searchView.setOnQueryTextListener(this);
     }
 
@@ -126,6 +129,7 @@ public class MainActivity extends FoodiesActivity implements
 
     @Override
     public void networkAvailable() {
+        //Log.d("NETWORK", "networkAvailable: ");
         NetworkPreference.setIsConnected(true);
     }
 

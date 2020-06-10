@@ -15,4 +15,8 @@
     <string name="user_card_google_services_error">Google Play response error :(</string>
     <string name="user_card_server_error">Server error occured :(</string>
     <string name="user_card_timeout_error">Server connection error :(</string>
+    <string name="seconds_ago">just now</string>
+    <string name="minutes_ago">minutes ago</string>
+    <string name="hours_ago">hours ago</string>
+    <string name="days_ago">days ago</string>
 </resources>

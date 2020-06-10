@@ -1,6 +1,7 @@
 package com.example.foodiesapp.ui.auth;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.example.foodiesapp.global.NetworkPreference;
 import com.example.foodiesapp.global.UserPreferences;
 import com.example.foodiesapp.models.User.User;
 import com.example.foodiesapp.models.User.UserResult;
+import com.example.foodiesapp.utils.web.Connectivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -41,11 +43,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
-public final class SignInFragment extends FoodiesFragment {
+public final class SignInFragment extends FoodiesFragment implements Connectivity.NetworkStateReceiverListener {
 
     @Inject
     ViewModelFactory viewModelFactory;
-
 
     private SignInViewModel signInViewModel;
 
@@ -67,6 +68,7 @@ public final class SignInFragment extends FoodiesFragment {
     private ImageView reloader;
 
     private ProgressBar progressBar;
+    private Connectivity networkConnectivity;
 
     @Override
     protected int layoutRes() {
@@ -74,13 +76,11 @@ public final class SignInFragment extends FoodiesFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        root = view.findViewById(R.id.user_card_fragment_view);
-
-        signInViewModel = new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
-        signInViewModel.signInResponse().observe(getViewLifecycleOwner(), this::consumeResponse);
+        networkConnectivity = new Connectivity();
+        networkConnectivity.addListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -88,6 +88,17 @@ public final class SignInFragment extends FoodiesFragment {
                 .build();
 
         gsc = GoogleSignIn.getClient(requireContext(), gso);
+
+
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        root = view.findViewById(R.id.user_card_fragment_view);
+        signInViewModel = new ViewModelProvider(this, viewModelFactory).get(SignInViewModel.class);
+        signInViewModel.signInResponse().observe(getViewLifecycleOwner(), this::consumeResponse);
 
         LayoutInflater inflater = (LayoutInflater) requireActivity().getSystemService(LAYOUT_INFLATER_SERVICE);
 
@@ -107,21 +118,19 @@ public final class SignInFragment extends FoodiesFragment {
             progressBar = userCardView.findViewById(R.id.left_panel_progress_bar);
 
             userCardUnauthedView = inflater.inflate(R.layout.user_card_unauthed, requireActivity().findViewById(R.id.user_card_unauthed_view));
-            Button signInButton = userCardUnauthedView.findViewById(R.id.left_menu_google_sign_in_button);
+            ImageView signInButton = userCardUnauthedView.findViewById(R.id.left_menu_google_sign_in_button);
             signInButton.setOnClickListener(this::onSignInClick);
 
             userNameTextView = userCardView.findViewById(R.id.current_user_name_text_view);
             userEmailTextView = userCardView.findViewById(R.id.current_user_email_text_view);
             userPictureImageView = userCardView.findViewById(R.id.current_user_image_view);
         }
+
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        account = GoogleSignIn.getLastSignedInAccount(requireContext());
-        updateUI();
-        gsc.silentSignIn().addOnCompleteListener(requireActivity(), this::handleSignInResult);
     }
 
     @Override
@@ -131,6 +140,18 @@ public final class SignInFragment extends FoodiesFragment {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requireContext().registerReceiver(networkConnectivity, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        requireContext().unregisterReceiver(networkConnectivity);
     }
 
     private void onSignInClick(View view) {
@@ -182,7 +203,7 @@ public final class SignInFragment extends FoodiesFragment {
             signInViewModel.callClientSignIn(null);
             if(e.getStatusCode() != 4) {
                 updateValues();
-                showUserCardReloader(R.string.user_card_google_services_error);
+                //showUserCardReloader(R.string.user_card_google_services_error);
             }
             Log.w("HandleSignInResult", "Error:", e);
         }
@@ -214,7 +235,7 @@ public final class SignInFragment extends FoodiesFragment {
                 if (user.getError().getDetails() != null) {
                     UserPreferences.setSignedUserOnNull();
                     updateValues();
-                    showUserCardReloader(R.string.user_card_server_error);
+                    //showUserCardReloader(R.string.user_card_server_error);
                     Log.d("UserError", user.getError().getDetails());
                 }
             }
@@ -222,19 +243,13 @@ public final class SignInFragment extends FoodiesFragment {
     }
 
     private void handleLoadingResponse() {
-        if(NetworkPreference.isConnected()) {
-            hideUserCardReloader();
-        } else {
-            UserPreferences.setSignedUserOnNull();
-            updateValues();
-            showUserCardReloader(R.string.user_card_timeout_error);
-        }
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     private void handleErrorResponse(@NotNull Throwable error) {
         UserPreferences.setSignedUserOnNull();
         updateValues();
-        showUserCardReloader(R.string.user_card_timeout_error);
+        //showUserCardReloader(R.string.user_card_timeout_error);
         Log.d("User response err", Objects.requireNonNull(error.getMessage()));
     }
 
@@ -272,4 +287,18 @@ public final class SignInFragment extends FoodiesFragment {
         userCardErrorTextView.setText("");
     }
 
+    @Override
+    public void networkAvailable() {
+        hideUserCardReloader();
+        account = GoogleSignIn.getLastSignedInAccount(requireContext());
+        updateUI();
+        gsc.silentSignIn().addOnCompleteListener(requireActivity(), this::handleSignInResult);
+    }
+
+    @Override
+    public void networkUnavailable() {
+        showUserCardReloader(R.string.user_card_server_error);
+        UserPreferences.setSignedUserOnNull();
+        updateValues();
+    }
 }

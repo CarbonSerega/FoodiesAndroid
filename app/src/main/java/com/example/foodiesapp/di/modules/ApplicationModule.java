@@ -37,6 +37,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     Retrofit provideRetrofit(Gson gson, OkHttpClient okHttpClient) {
+        gson = (new GsonBuilder()).setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
         return new Retrofit.Builder()
                 .baseUrl(Endpoints.BASE)

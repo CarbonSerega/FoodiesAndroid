@@ -8,11 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.foodiesapp.R;
 import com.example.foodiesapp.models.Post.Post;
+import com.example.foodiesapp.ui.adapters.adapter.hashtag.HashtagListAdapter;
+import com.example.foodiesapp.ui.adapters.adapter.ingredient.IngredientListAdapter;
+import com.example.foodiesapp.utils.web.PubDateTime;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -77,7 +82,7 @@ final class PostViewHolder extends RecyclerView.ViewHolder {
             postMainImageView.setImageDrawable(null);
 
         postDescriptionTextView.setText(post.getDescription());
-        postPubTimeTextView.setText(post.getPubtime().toString());
+        postPubTimeTextView.setText(PubDateTime.getParsedPubTime(post.getPubtime(), itemView.getContext()));
         categoryTextView.setText(post.getCategory().getName());
 
         String likes = post.getLikes()+"";
@@ -87,5 +92,12 @@ final class PostViewHolder extends RecyclerView.ViewHolder {
                 ColorStateList.valueOf(ContextCompat.getColor(itemView.getContext(),
                         post.isLikedByUser() ? R.color.colorPrimary : R.color.userGrayColor)));
 
+        RecyclerView ingredientsView = itemView.findViewById(R.id.ingredients_recycler_view);
+        ingredientsView.setAdapter(new IngredientListAdapter(post.getIngredients()));
+        ingredientsView.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        RecyclerView hashtagView = itemView.findViewById(R.id.hashtags_recycler_view);
+        hashtagView.setAdapter(new HashtagListAdapter(post.getAssignments()));
+        hashtagView.setLayoutManager(new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false));
     }
 }

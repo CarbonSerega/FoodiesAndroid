@@ -37,6 +37,7 @@ public class User {
         return locale;
     }
 
+    @Nullable
     public Error getError() {
         return error;
     }

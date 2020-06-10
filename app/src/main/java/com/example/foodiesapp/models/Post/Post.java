@@ -21,7 +21,8 @@ public class Post {
     private String image;
 
     private String description;
-    private String pubtime;
+
+    private Date pubtime;
     private int shares;
     private int likes;
     private float proteins;
@@ -57,7 +58,7 @@ public class Post {
         return description;
     }
 
-    public String getPubtime() {
+    public Date getPubtime() {
         return pubtime;
     }
 
